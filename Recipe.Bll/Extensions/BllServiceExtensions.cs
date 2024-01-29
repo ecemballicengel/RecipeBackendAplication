@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Recipe.Bll.Services.CategoryServices;
+using Recipe.Bll.Services.RecipeServices;
 using Recipe.Dal.Extensions;
 
 namespace Recipe.Bll.Extensions
@@ -8,6 +10,8 @@ namespace Recipe.Bll.Extensions
         public static void AddBllServices(this IServiceCollection services)
         {
             services.AddDalServices();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IRecipeService, RecipeService>();
         }
     }
 }
