@@ -1,5 +1,7 @@
 ﻿using Recipe.Dal.DbContexts;
+using Recipe.Dtos.Request;
 using Recipe.Dtos.Response;
+using Recipe.Entities;
 
 namespace Recipe.Bll.Services.RecipeServices
 {
@@ -72,10 +74,10 @@ namespace Recipe.Bll.Services.RecipeServices
 
                 return new RecipeResponseDto
                 {
-                    Id =response.Id,
+                    Id = response.Id,
                     Title = response.Title,
                     TitleImage = response.TitleImage,
-                    PreparetionTime= response.PreparetionTime,
+                    PreparetionTime = response.PreparetionTime,
                 };
 
             }
@@ -86,7 +88,7 @@ namespace Recipe.Bll.Services.RecipeServices
             }
         }
 
-        private int GenerateRandomCategoryId(int minNumber,int maxNumber)
+        private int GenerateRandomCategoryId(int minNumber, int maxNumber)
         {
             Random rand = new Random();
 
@@ -95,5 +97,80 @@ namespace Recipe.Bll.Services.RecipeServices
             return randomNumber;
         }
         #endregion
+
+        public void AddRecipe(AddRecipeRequestDto request)
+        {
+            try
+            {
+                var recipes = _dbContext.Recipes.Add(new RecipeEntity
+                {
+                    CreatedAt = DateTime.Now,
+                    CategoryId = request.CategoryId,
+                    CookingTime = request.CookingTime,
+                    Title = request.Title,
+                    TitleImage = request.TitleImage,
+                    PreparetionTime = request.PreparetionTime,
+                    NumberOfPeople = request.NumberOfPeople,
+                    IsDeleted = false
+                });
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Tarif eklenemedi");
+            }
+        }
+        public void UpdateRecipe(UpdateRecipeRequestDto request)
+        {
+            try
+            {
+                var existingRecipe = _dbContext.Recipes.Find(request.Id);
+
+                if (existingRecipe == null)
+                {
+
+                    throw new Exception("Tarif bulunamadı");
+                }
+
+                existingRecipe.Title = request.Title;
+                existingRecipe.TitleImage = request.TitleImage;
+                existingRecipe.NumberOfPeople = request.NumberOfPeople;
+                existingRecipe.CookingTime = request.CookingTime;
+                existingRecipe.PreparetionTime = request.PreparetionTime;
+                existingRecipe.CategoryId = request.CategoryId;
+                existingRecipe.UpdatedAt = DateTime.Now;
+
+                _dbContext.Update(existingRecipe);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Tarif guncellenemedi");
+            }
+        }
+
+        public void DeleteRecipe(DeleteRecipeRequestDto request)
+        {
+            try
+            {
+                var existingRecipe = _dbContext.Recipes.Where(r => r.Id == request.Id && r.IsDeleted == false).FirstOrDefault();
+                if (existingRecipe == null)
+                {
+                    throw new Exception("Tarif bulunamadi");
+                }
+                existingRecipe.IsDeleted = true;
+                _dbContext.Update(existingRecipe);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Tarif bulunamadi");
+            }
+        }
+
+
     }
 }

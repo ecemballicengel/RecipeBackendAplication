@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Bll.Services.RecipeServices;
+using Recipe.Dtos.Request;
 
 namespace Recipe.Api.Controllers
 {
@@ -15,18 +16,49 @@ namespace Recipe.Api.Controllers
             _recipeService = recipeService;
         }
         [HttpGet]
-        public IActionResult GetRecipeList() 
+        public IActionResult GetRecipeList()
         {
-            var recipeList= _recipeService.GetRecipeList();
+            var recipeList = _recipeService.GetRecipeList();
 
             return Ok(recipeList);
         }
 
         [HttpGet("GetDailyMenu")]
-        public IActionResult GetDailyRecipeList() 
+        public IActionResult GetDailyRecipeList()
         {
             var recipeList = _recipeService.GetDailyRecipeList();
             return Ok(recipeList);
+        }
+
+        [HttpPost]
+        public IActionResult AddRecipe(AddRecipeRequestDto request)
+        {
+            _recipeService.AddRecipe(request);
+            return Ok("Ekleme basarili");
+        }
+        [HttpPut]
+        public IActionResult UpdateRecipe(UpdateRecipeRequestDto request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Gecersiz veri");
+            }
+            try
+            {
+                _recipeService.UpdateRecipe(request);
+                return Ok("Tarif guncellendi");
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Guncelleme islemi basarisiz");
+            }
+        }
+        [HttpDelete]
+        public IActionResult DeleteRecipe(DeleteRecipeRequestDto request) 
+        { 
+            _recipeService.DeleteRecipe(request);
+            return Ok("Tarif Silindi");
         }
     }
 }
