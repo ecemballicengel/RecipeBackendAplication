@@ -19,7 +19,7 @@ namespace Recipe.Bll.Services.RecipeIngredientServices
             try
             {
                 var data = _dbContext.RecipeIngredients
-                    .Where(x => x.RecipeId == request.RecipeId)                 
+                    .Where(x => x.RecipeId == request.RecipeId && x.IsDeleted == false)                 
                     .Select(x => new RecipeIngredientResponseDto
                     {
                         Amount = x.Amount,
