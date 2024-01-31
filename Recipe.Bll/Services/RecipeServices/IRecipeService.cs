@@ -1,4 +1,5 @@
-﻿using Recipe.Dtos.Response;
+﻿using Recipe.Dtos.Request;
+using Recipe.Dtos.Response;
 
 namespace Recipe.Bll.Services.RecipeServices
 {
@@ -6,5 +7,9 @@ namespace Recipe.Bll.Services.RecipeServices
     {
         List<RecipeResponseDto> GetRecipeList();
         List<RecipeResponseDto> GetDailyRecipeList();
+
+        void AddRecipe(AddRecipeRequestDto request);
+        void UpdateRecipe(UpdateRecipeRequestDto request);
+        void DeleteRecipe(DeleteRecipeRequestDto request);
     }
 }
