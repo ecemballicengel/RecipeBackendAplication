@@ -125,7 +125,7 @@ namespace Recipe.Bll.Services.RecipeServices
         {
             try
             {
-                var existingRecipe = _dbContext.Recipes.Find(request.Id);
+                var existingRecipe = _dbContext.Recipes.FirstOrDefault(x=>x.IsDeleted == false && x.Id == request.Id);
 
                 if (existingRecipe == null)
                 {
@@ -155,7 +155,8 @@ namespace Recipe.Bll.Services.RecipeServices
         {
             try
             {
-                var existingRecipe = _dbContext.Recipes.Where(r => r.Id == request.Id && r.IsDeleted == false).FirstOrDefault();
+                var existingRecipe = _dbContext.Recipes.FirstOrDefault(r => r.Id == request.Id && r.IsDeleted == false);
+
                 if (existingRecipe == null)
                 {
                     throw new Exception("Tarif bulunamadi");
