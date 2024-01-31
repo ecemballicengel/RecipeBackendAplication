@@ -12,8 +12,4 @@
     <ProjectReference Include="..\Recipe.Entities\Recipe.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\RecipeIngredientServices\" />
-  </ItemGroup>
-
 </Project>
