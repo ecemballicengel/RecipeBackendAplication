@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Recipe.Bll.Services.AmountTypeServices;
 using Recipe.Bll.Services.CategoryServices;
+using Recipe.Bll.Services.RecipeDescriptionServices;
 using Recipe.Bll.Services.RecipeIngredientServices;
 using Recipe.Bll.Services.RecipeServices;
 using Recipe.Dal.Extensions;
@@ -16,6 +17,7 @@ namespace Recipe.Bll.Extensions
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<IRecipeIngredientService, RecipeIngredientService>();
             services.AddScoped<IAmountTypeService, AmountTypeService>();
+            services.AddScoped<IRecipeDescriptionService, RecipeDescriptionService>();
         }
     }
 }
