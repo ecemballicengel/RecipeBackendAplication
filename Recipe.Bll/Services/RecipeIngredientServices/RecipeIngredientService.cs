@@ -22,6 +22,7 @@ namespace Recipe.Bll.Services.RecipeIngredientServices
                     .Where(x => x.RecipeId == request.RecipeId && x.IsDeleted == false)                 
                     .Select(x => new RecipeIngredientResponseDto
                     {
+                        Id = x.Id,
                         Amount = x.Amount,
                         AmountTypeId = x.AmountTypeId,
                         Name = x.Name
