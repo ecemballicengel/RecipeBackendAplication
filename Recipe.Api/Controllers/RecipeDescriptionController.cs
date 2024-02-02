@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Bll.Services.RecipeDescriptionServices;
 using Recipe.Dtos.Request;
@@ -6,6 +7,7 @@ using Recipe.Dtos.Request;
 namespace Recipe.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class RecipeDescriptionController : ControllerBase
     {
@@ -16,6 +18,7 @@ namespace Recipe.Api.Controllers
             _recipeDescriptionService = recipeDescriptionService;
         }
 
+        [AllowAnonymous]
         [HttpGet("{recipeId}")]
         public IActionResult GetRecipeIngredients(int recipeId)
         {

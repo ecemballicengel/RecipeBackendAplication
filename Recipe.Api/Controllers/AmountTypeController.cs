@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Bll.Services.AmountTypeServices;
 using Recipe.Dtos.Request;
@@ -6,6 +7,7 @@ using Recipe.Dtos.Request;
 namespace Recipe.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class AmountTypeController : ControllerBase
     {
@@ -34,6 +36,7 @@ namespace Recipe.Api.Controllers
             _amountTypeService.DeleteAmountType(request);
             return Ok("Miktar tipi silindi");
         }
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetAmountTypes()
         {

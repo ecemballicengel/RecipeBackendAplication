@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Bll.Services.RecipeServices;
 using Recipe.Dtos.Request;
@@ -6,6 +7,7 @@ using Recipe.Dtos.Request;
 namespace Recipe.Api.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class RecipeController : ControllerBase
     {
@@ -15,6 +17,7 @@ namespace Recipe.Api.Controllers
         {
             _recipeService = recipeService;
         }
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult GetRecipeList()
         {
@@ -23,6 +26,7 @@ namespace Recipe.Api.Controllers
             return Ok(recipeList);
         }
 
+        [AllowAnonymous]
         [HttpGet("GetDailyMenu")]
         public IActionResult GetDailyRecipeList()
         {
@@ -36,6 +40,7 @@ namespace Recipe.Api.Controllers
             _recipeService.AddRecipe(request);
             return Ok("Ekleme basarili");
         }
+
         [HttpPut]
         public IActionResult UpdateRecipe(UpdateRecipeRequestDto request)
         {
