@@ -24,7 +24,7 @@ namespace Recipe.Dal.DbContexts
             base.OnModelCreating(modelBuilder);
             SeedDataExtension.SeedCategories(modelBuilder);
             SeedDataExtension.SeedAmountTypes(modelBuilder);
-
+            SeedDataExtension.SeedUsers(modelBuilder);
         }
 
         public DbSet<RecipeEntity> Recipes { get; set; }
@@ -32,6 +32,7 @@ namespace Recipe.Dal.DbContexts
         public DbSet<RecipeIngredientsEntity> RecipeIngredients { get; set; }
         public DbSet<CategoriesEntity> Categories { get; set; }
         public DbSet<AmountTypesEntity> AmountTypes { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
 
     }
 }

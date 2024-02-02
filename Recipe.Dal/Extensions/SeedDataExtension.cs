@@ -146,5 +146,11 @@ namespace Recipe.Dal.Extensions
                 }
                 );
         }
+
+        public static void SeedUsers(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<UserEntity>().HasData(
+                new UserEntity() { Id = 1,UserName = "Admin", Password = "Password.12Ebc", Email = "ecem.balli.eb@gmail.com",RetryCount = 0 });
+        }
     }
 }
