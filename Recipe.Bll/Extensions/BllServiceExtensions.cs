@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Recipe.Bll.Services.AmountTypeServices;
 using Recipe.Bll.Services.CategoryServices;
+using Recipe.Bll.Services.HelperServices;
 using Recipe.Bll.Services.LoginServices;
 using Recipe.Bll.Services.RecipeDescriptionServices;
 using Recipe.Bll.Services.RecipeIngredientServices;
@@ -24,6 +25,7 @@ namespace Recipe.Bll.Extensions
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<ILoginService, LoginService>();
             services.AddScoped<IRegisterService, RegisterService>();
+            services.AddScoped<IHelperService, HelperService>();
         }
     }
 }
