@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -83,6 +84,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var fileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.WebRootPath, "Images"));
+var requestPath = "/Images";
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = fileProvider,
+    RequestPath = requestPath
+});
+
+app.UseDirectoryBrowser(new DirectoryBrowserOptions
+{
+    FileProvider = fileProvider,
+    RequestPath = requestPath
+});
 app.UseCors("corsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();

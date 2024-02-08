@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Recipe.Bll\Recipe.Bll.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
 </Project>
