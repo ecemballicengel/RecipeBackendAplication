@@ -29,7 +29,8 @@ namespace Recipe.Bll.Services.CategoryServices
                     {
                         Id = category.Id,
                         Name = category.Name,
-                        Description = category.Description
+                        Description = category.Description,
+                        ImageUrl= category.ImageUrl,
                     });
                 }
 
@@ -49,6 +50,7 @@ namespace Recipe.Bll.Services.CategoryServices
                 {
                     Name = request.Name,
                     Description= request.Description,
+                    ImageUrl = request.ImageUrl,
                     CreatedAt = DateTime.UtcNow,
                     IsDeleted = false
                 });
@@ -72,6 +74,7 @@ namespace Recipe.Bll.Services.CategoryServices
                 }
                 data.Name = request.Name;
                 data.Description = request.Description;
+                data.ImageUrl = request.ImageUrl; 
                 data.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Update(data);
                 _dbContext.SaveChanges(true);
