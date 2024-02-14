@@ -181,6 +181,24 @@ namespace Recipe.Bll.Services.RecipeServices
             }
         }
 
+        public RecipeByIdResponseDto GetRecipeById(GetRecipeByIdRequestDto request)
+        {
+           
+                var data = _dbContext.Recipes.FirstOrDefault(x => x.Id == request.Id && x.IsDeleted == false);
+                var response = new RecipeByIdResponseDto()
+                {
+                    Id = data.Id,
+                    CategoryId = data.CategoryId,
+                    Title = data.Title,
+                    TitleImage = data.TitleImage,
+                    PreparetionTime = data.PreparetionTime,
+                    NumberOfPeople  = data.NumberOfPeople,
+                    CookingTime = data.CookingTime,
 
+                };
+                return response;
+           
+
+        }
     }
 }
