@@ -11,5 +11,7 @@ namespace Recipe.Bll.Services.RecipeServices
         int AddRecipe(AddRecipeRequestDto request);
         void UpdateRecipe(UpdateRecipeRequestDto request);
         void DeleteRecipe(DeleteRecipeRequestDto request);
+
+        RecipeByIdResponseDto GetRecipeById(GetRecipeByIdRequestDto request);
     }
 }

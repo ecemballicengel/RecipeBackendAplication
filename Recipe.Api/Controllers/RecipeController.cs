@@ -66,5 +66,13 @@ namespace Recipe.Api.Controllers
             _recipeService.DeleteRecipe(request);
             return Ok("Tarif Silindi");
         }
+
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public IActionResult GetRecipeById(int id)
+        {
+            var data = _recipeService.GetRecipeById(new GetRecipeByIdRequestDto { Id = id });
+            return Ok(data);
+        }
     }
 }
