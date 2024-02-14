@@ -1,4 +1,6 @@
-﻿using Recipe.Dal.DbContexts;
+﻿using Microsoft.IdentityModel.Tokens;
+using Recipe.Bll.Services.HelperServices;
+using Recipe.Dal.DbContexts;
 using Recipe.Dtos.Request;
 using Recipe.Dtos.Response;
 using Recipe.Entities;
@@ -8,10 +10,12 @@ namespace Recipe.Bll.Services.CategoryServices
     public class CategoryService : ICategoryService
     {
         private readonly RecipeDbContext _dbContext;
+        private readonly IHelperService _helperService;
 
-        public CategoryService(RecipeDbContext dbContext)
+        public CategoryService(RecipeDbContext dbContext,IHelperService helperService)
         {
             _dbContext = dbContext;
+            _helperService = helperService;
         }
 
 
@@ -50,7 +54,7 @@ namespace Recipe.Bll.Services.CategoryServices
                 {
                     Name = request.Name,
                     Description= request.Description,
-                    ImageUrl = request.ImageUrl,
+                    ImageUrl = request.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.ImageUrl),
                     CreatedAt = DateTime.UtcNow,
                     IsDeleted = false
                 });
@@ -74,7 +78,7 @@ namespace Recipe.Bll.Services.CategoryServices
                 }
                 data.Name = request.Name;
                 data.Description = request.Description;
-                data.ImageUrl = request.ImageUrl; 
+                data.ImageUrl = request.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.ImageUrl);
                 data.UpdatedAt = DateTime.UtcNow;
                 _dbContext.Update(data);
                 _dbContext.SaveChanges(true);

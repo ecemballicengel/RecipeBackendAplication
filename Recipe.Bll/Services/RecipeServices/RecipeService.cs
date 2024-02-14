@@ -1,4 +1,6 @@
-﻿using Recipe.Dal.DbContexts;
+﻿using Microsoft.IdentityModel.Tokens;
+using Recipe.Bll.Services.HelperServices;
+using Recipe.Dal.DbContexts;
 using Recipe.Dtos.Request;
 using Recipe.Dtos.Response;
 using Recipe.Entities;
@@ -8,10 +10,12 @@ namespace Recipe.Bll.Services.RecipeServices
     public class RecipeService : IRecipeService
     {
         private readonly RecipeDbContext _dbContext;
+        private readonly IHelperService _helperService;
 
-        public RecipeService(RecipeDbContext dbContext)
+        public RecipeService(RecipeDbContext dbContext,IHelperService helperService)
         {
             _dbContext = dbContext;
+            _helperService = helperService;
         }
         public List<RecipeResponseDto> GetRecipeList()
         {
@@ -98,22 +102,27 @@ namespace Recipe.Bll.Services.RecipeServices
         }
         #endregion
 
-        public void AddRecipe(AddRecipeRequestDto request)
+        public int AddRecipe(AddRecipeRequestDto request)
         {
             try
             {
-                var recipes = _dbContext.Recipes.Add(new RecipeEntity
+                var data = new RecipeEntity
                 {
                     CreatedAt = DateTime.Now,
                     CategoryId = request.CategoryId,
                     CookingTime = request.CookingTime,
                     Title = request.Title,
-                    TitleImage = request.TitleImage,
+                    TitleImage = request.TitleImage.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.TitleImage),
                     PreparetionTime = request.PreparetionTime,
                     NumberOfPeople = request.NumberOfPeople,
                     IsDeleted = false
-                });
+                };
+                
+                var recipes = _dbContext.Recipes.Add(data);
                 _dbContext.SaveChanges();
+
+                int recipeId = data.Id;
+                return recipeId;
             }
             catch (Exception ex)
             {
@@ -134,7 +143,7 @@ namespace Recipe.Bll.Services.RecipeServices
                 }
 
                 existingRecipe.Title = request.Title;
-                existingRecipe.TitleImage = request.TitleImage;
+                existingRecipe.TitleImage = request.TitleImage.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.TitleImage);
                 existingRecipe.NumberOfPeople = request.NumberOfPeople;
                 existingRecipe.CookingTime = request.CookingTime;
                 existingRecipe.PreparetionTime = request.PreparetionTime;

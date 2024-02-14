@@ -8,7 +8,7 @@ namespace Recipe.Bll.Services.RecipeServices
         List<RecipeResponseDto> GetRecipeList();
         List<RecipeResponseDto> GetDailyRecipeList();
 
-        void AddRecipe(AddRecipeRequestDto request);
+        int AddRecipe(AddRecipeRequestDto request);
         void UpdateRecipe(UpdateRecipeRequestDto request);
         void DeleteRecipe(DeleteRecipeRequestDto request);
     }

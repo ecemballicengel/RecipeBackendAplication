@@ -1,4 +1,6 @@
-﻿using Recipe.Dal.DbContexts;
+﻿using Microsoft.IdentityModel.Tokens;
+using Recipe.Bll.Services.HelperServices;
+using Recipe.Dal.DbContexts;
 using Recipe.Dtos.Request;
 using Recipe.Dtos.Response;
 using Recipe.Entities;
@@ -13,10 +15,12 @@ namespace Recipe.Bll.Services.RecipeDescriptionServices
     public class RecipeDescriptionService : IRecipeDescriptionService
     {
         private readonly RecipeDbContext _dbContext;
+        private readonly IHelperService _helperService;
 
-        public RecipeDescriptionService(RecipeDbContext dbContext)
+        public RecipeDescriptionService(RecipeDbContext dbContext, IHelperService helperService)
         {
             _dbContext = dbContext;
+            _helperService = helperService;
         }
         public List<RecipeDescriptionResponseDto> GetRecipeDescriptionsByRecipeId(GetRecipeDescriptionByRecipeIdRequestDto request)
         {
@@ -49,11 +53,11 @@ namespace Recipe.Bll.Services.RecipeDescriptionServices
 
                     _dbContext.Add(new RecipeDescriptionEntity
                     {
-                       Description = recipeDescription.Description,
-                       ImageUrl = recipeDescription.ImageUrl,
+                        Description = recipeDescription.Description,
+                        ImageUrl = recipeDescription.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(recipeDescription.ImageUrl),
                         CreatedAt = DateTime.UtcNow,
                         IsDeleted = false,
-                        RecipeId=recipeDescription.RecipeId
+                        RecipeId = recipeDescription.RecipeId
                     });
 
                 }
@@ -73,13 +77,13 @@ namespace Recipe.Bll.Services.RecipeDescriptionServices
                 {
                     var data = _dbContext.RecipeDescriptions.FirstOrDefault(x => x.IsDeleted == false && x.Id == recipeDescription.Id);
 
-                    if(data == null)
+                    if (data == null)
                     {
                         throw new Exception("Tarif Tanimi bulunamadi");
                     }
 
                     data.Description = recipeDescription.Description;
-                    data.ImageUrl = recipeDescription.ImageUrl;
+                    data.ImageUrl = recipeDescription.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(recipeDescription.ImageUrl);
                     data.RecipeId = recipeDescription.RecipeId;
                     data.UpdatedAt = DateTime.UtcNow;
 
@@ -98,7 +102,7 @@ namespace Recipe.Bll.Services.RecipeDescriptionServices
             try
             {
                 var data = _dbContext.RecipeDescriptions.FirstOrDefault(x => x.Id == request.Id);
-                
+
                 if (data == null)
                 {
                     throw new Exception("Tarif Tanimi bulunamadi");
