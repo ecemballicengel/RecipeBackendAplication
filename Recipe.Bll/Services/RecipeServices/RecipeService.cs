@@ -4,6 +4,7 @@ using Recipe.Dal.DbContexts;
 using Recipe.Dtos.Request;
 using Recipe.Dtos.Response;
 using Recipe.Entities;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Recipe.Bll.Services.RecipeServices
 {
@@ -30,9 +31,12 @@ namespace Recipe.Bll.Services.RecipeServices
                     response.Add(new RecipeResponseDto
                     {
                         Id = recipe.Id,
+                        CategoryId = recipe.CategoryId,
                         Title = recipe.Title,
                         TitleImage = recipe.TitleImage,
                         PreparetionTime = recipe.PreparetionTime,
+                        NumberOfPeople = recipe.NumberOfPeople,
+                        CookingTime = recipe.CookingTime,
                     });
                 }
 
@@ -75,13 +79,19 @@ namespace Recipe.Bll.Services.RecipeServices
                 var recipes = _dbContext.Recipes.Where(x => x.CategoryId == categoryId && x.IsDeleted == false).OrderBy(x => Guid.NewGuid()).ToList();
 
                 var response = recipes.FirstOrDefault();
-
+                if(response == null)
+                {
+                    return new RecipeResponseDto();
+                }
                 return new RecipeResponseDto
                 {
                     Id = response.Id,
                     Title = response.Title,
                     TitleImage = response.TitleImage,
                     PreparetionTime = response.PreparetionTime,
+                    CookingTime = response.CookingTime,
+                    NumberOfPeople = response.NumberOfPeople,
+                    CategoryId=response.CategoryId
                 };
 
             }
