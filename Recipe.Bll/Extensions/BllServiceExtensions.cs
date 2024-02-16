@@ -9,6 +9,7 @@ using Recipe.Bll.Services.RecipeIngredientServices;
 using Recipe.Bll.Services.RecipeServices;
 using Recipe.Bll.Services.RegisterServices;
 using Recipe.Bll.Services.TokenServices;
+using Recipe.Bll.Services.UserServices;
 using Recipe.Dal.Extensions;
 
 namespace Recipe.Bll.Extensions
@@ -28,6 +29,7 @@ namespace Recipe.Bll.Extensions
             services.AddScoped<IRegisterService, RegisterService>();
             services.AddScoped<IHelperService, HelperService>();
             services.AddScoped<IRecipeBusinessWorkFlowService, RecipeBusinessWorkFlowService>();
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

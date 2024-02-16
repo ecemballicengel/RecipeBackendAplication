@@ -13,7 +13,7 @@ namespace Recipe.Bll.Services.RecipeServices
         private readonly RecipeDbContext _dbContext;
         private readonly IHelperService _helperService;
 
-        public RecipeService(RecipeDbContext dbContext,IHelperService helperService)
+        public RecipeService(RecipeDbContext dbContext, IHelperService helperService)
         {
             _dbContext = dbContext;
             _helperService = helperService;
@@ -28,6 +28,8 @@ namespace Recipe.Bll.Services.RecipeServices
 
                 foreach (var recipe in recipes)
                 {
+                    var user = _dbContext.Users.FirstOrDefault(x => x.Id == recipe.CreatedBy);
+                    
                     response.Add(new RecipeResponseDto
                     {
                         Id = recipe.Id,
@@ -37,6 +39,8 @@ namespace Recipe.Bll.Services.RecipeServices
                         PreparetionTime = recipe.PreparetionTime,
                         NumberOfPeople = recipe.NumberOfPeople,
                         CookingTime = recipe.CookingTime,
+                        UserName = user != null && user.UserName.IsNullOrEmpty() ? "" : user.UserName,
+                        UserImage = user != null && user.ImageUrl.IsNullOrEmpty() ? "" : user.ImageUrl,
                     });
                 }
 
@@ -79,7 +83,7 @@ namespace Recipe.Bll.Services.RecipeServices
                 var recipes = _dbContext.Recipes.Where(x => x.CategoryId == categoryId && x.IsDeleted == false).OrderBy(x => Guid.NewGuid()).ToList();
 
                 var response = recipes.FirstOrDefault();
-                if(response == null)
+                if (response == null)
                 {
                     return new RecipeResponseDto();
                 }
@@ -91,7 +95,7 @@ namespace Recipe.Bll.Services.RecipeServices
                     PreparetionTime = response.PreparetionTime,
                     CookingTime = response.CookingTime,
                     NumberOfPeople = response.NumberOfPeople,
-                    CategoryId=response.CategoryId
+                    CategoryId = response.CategoryId
                 };
 
             }
@@ -127,7 +131,7 @@ namespace Recipe.Bll.Services.RecipeServices
                     NumberOfPeople = request.NumberOfPeople,
                     IsDeleted = false
                 };
-                
+
                 var recipes = _dbContext.Recipes.Add(data);
                 _dbContext.SaveChanges();
 
@@ -144,7 +148,7 @@ namespace Recipe.Bll.Services.RecipeServices
         {
             try
             {
-                var existingRecipe = _dbContext.Recipes.FirstOrDefault(x=>x.IsDeleted == false && x.Id == request.Id);
+                var existingRecipe = _dbContext.Recipes.FirstOrDefault(x => x.IsDeleted == false && x.Id == request.Id);
 
                 if (existingRecipe == null)
                 {
@@ -193,22 +197,110 @@ namespace Recipe.Bll.Services.RecipeServices
 
         public RecipeByIdResponseDto GetRecipeById(GetRecipeByIdRequestDto request)
         {
-           
-                var data = _dbContext.Recipes.FirstOrDefault(x => x.Id == request.Id && x.IsDeleted == false);
-                var response = new RecipeByIdResponseDto()
-                {
-                    Id = data.Id,
-                    CategoryId = data.CategoryId,
-                    Title = data.Title,
-                    TitleImage = data.TitleImage,
-                    PreparetionTime = data.PreparetionTime,
-                    NumberOfPeople  = data.NumberOfPeople,
-                    CookingTime = data.CookingTime,
 
-                };
-                return response;
-           
+            var data = _dbContext.Recipes.FirstOrDefault(x => x.Id == request.Id && x.IsDeleted == false);
+            var user = _dbContext.Users.FirstOrDefault(x => x.Id == data.CreatedBy);
+            var response = new RecipeByIdResponseDto()
+            {
+                Id = data.Id,
+                CategoryId = data.CategoryId,
+                Title = data.Title,
+                TitleImage = data.TitleImage,
+                PreparetionTime = data.PreparetionTime,
+                NumberOfPeople = data.NumberOfPeople,
+                CookingTime = data.CookingTime,
+                UserName = user != null && user.UserName.IsNullOrEmpty() ? "" : user.UserName,
+                UserImage = user != null && user.ImageUrl.IsNullOrEmpty() ? "" : user.ImageUrl,
+
+            };
+            return response;
+
 
         }
+
+        public List<RecipeResponseDto> GetRecipeListByUserId(GetRecipeListByUserIdRequestDto request)
+        {
+            try
+            {
+                var recipes = _dbContext.Recipes.Where(x => x.IsDeleted == false && request.UserId == x.CreatedBy).ToList();
+
+                var response = new List<RecipeResponseDto>();
+
+                foreach (var recipe in recipes)
+                {
+                    var user = _dbContext.Users.FirstOrDefault(x => x.Id == recipe.CreatedBy);
+
+                    response.Add(new RecipeResponseDto
+                    {
+                        Id = recipe.Id,
+                        CategoryId = recipe.CategoryId,
+                        Title = recipe.Title,
+                        TitleImage = recipe.TitleImage,
+                        PreparetionTime = recipe.PreparetionTime,
+                        NumberOfPeople = recipe.NumberOfPeople,
+                        CookingTime = recipe.CookingTime,
+                        UserName = user != null && user.UserName.IsNullOrEmpty() ? "" : user.UserName,
+                        UserImage = user != null && user.ImageUrl.IsNullOrEmpty() ? "" : user.ImageUrl,
+                    });
+                }
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Tarifleri getirirken bir hata olustu");
+            }
+
+        }
+        public void UpdateUserRecipe(UpdateUserRecipeRequestDto request)
+        {
+            try
+            {
+                var existingRecipe = _dbContext.Recipes.FirstOrDefault(x => x.Id == request.RecipeId && x.IsDeleted == false && x.CreatedBy == request.UserId);
+
+                if (existingRecipe == null)
+                {
+                    throw new Exception("Kullanıcıya ait tarif bulunamadı");
+                }
+
+                existingRecipe.Title = request.Title;
+                existingRecipe.TitleImage = request.TitleImage.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.TitleImage);
+                existingRecipe.NumberOfPeople = request.NumberOfPeople;
+                existingRecipe.CookingTime = request.CookingTime;
+                existingRecipe.PreparetionTime = request.PreparetionTime;
+                existingRecipe.CategoryId = request.CategoryId;
+                existingRecipe.UpdatedAt = DateTime.Now;
+
+                _dbContext.Update(existingRecipe);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Tarif güncellenirken bir hata oluştu");
+            }
+        }
+        public void DeleteUserRecipe(DeleteUserRecipeRequestDto request)
+        {
+            try
+            {
+                var existingRecipe = _dbContext.Recipes.FirstOrDefault(x => x.Id == request.RecipeId && x.IsDeleted == false && x.CreatedBy == request.UserId);
+
+                if (existingRecipe == null)
+                {
+                    throw new Exception("Kullanıcıya ait tarif bulunamadı");
+                }
+
+                existingRecipe.IsDeleted = true;
+                _dbContext.Update(existingRecipe);
+                _dbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Tarif silinirken bir hata oluştu");
+            }
+
+        }
+
     }
 }
