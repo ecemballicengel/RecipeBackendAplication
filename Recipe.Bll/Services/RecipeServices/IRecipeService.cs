@@ -13,5 +13,10 @@ namespace Recipe.Bll.Services.RecipeServices
         void DeleteRecipe(DeleteRecipeRequestDto request);
 
         RecipeByIdResponseDto GetRecipeById(GetRecipeByIdRequestDto request);
+
+        List<RecipeResponseDto> GetRecipeListByUserId(GetRecipeListByUserIdRequestDto request);
+
+        void UpdateUserRecipe(UpdateUserRecipeRequestDto request);
+        void DeleteUserRecipe(DeleteUserRecipeRequestDto request);
     }
 }

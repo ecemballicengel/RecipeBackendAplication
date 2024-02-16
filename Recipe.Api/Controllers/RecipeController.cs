@@ -74,5 +74,50 @@ namespace Recipe.Api.Controllers
             var data = _recipeService.GetRecipeById(new GetRecipeByIdRequestDto { Id = id });
             return Ok(data);
         }
+
+        [AllowAnonymous]
+        [HttpGet("UserId/{id}")]
+        public IActionResult GetRecipeByUserId(int id)
+        {
+            var data = _recipeService.GetRecipeListByUserId(new GetRecipeListByUserIdRequestDto { UserId = id });
+            return Ok(data);
+        }
+
+        [HttpPut("UpdateUserRecipe")]
+        public IActionResult UpdateUserRecipe(UpdateUserRecipeRequestDto request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Geçersiz veri");
+            }
+
+            try
+            {
+                _recipeService.UpdateUserRecipe(request);
+                return Ok("Tarif güncellendi");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Tarif güncellenirken bir hata oluştu");
+            }
+        }
+        [HttpDelete("DeleteUserRecipe")]
+        public IActionResult DeleteUserRecipe(DeleteUserRecipeRequestDto request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Geçersiz veri");
+            }
+
+            try
+            {
+                _recipeService.DeleteUserRecipe(request);
+                return Ok("Tarif silindi");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Tarif silinirken bir hata oluştu");
+            }
+        }
     }
 }
