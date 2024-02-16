@@ -9,5 +9,6 @@
         public DateTime AccessTokenExpireDate { get; set; }
         public string Role { get; set; } = "";
         public int RetryCount { get; set; }
+        public string ImageUrl { get; set; } = "";
     }
 }
