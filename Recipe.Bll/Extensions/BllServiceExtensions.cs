@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Recipe.Bll.Services.AdminServices;
 using Recipe.Bll.Services.AmountTypeServices;
 using Recipe.Bll.Services.CategoryServices;
 using Recipe.Bll.Services.HelperServices;
@@ -30,6 +31,7 @@ namespace Recipe.Bll.Extensions
             services.AddScoped<IHelperService, HelperService>();
             services.AddScoped<IRecipeBusinessWorkFlowService, RecipeBusinessWorkFlowService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAdminService, AdminService>();
         }
     }
 }
