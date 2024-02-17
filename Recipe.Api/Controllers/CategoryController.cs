@@ -26,23 +26,6 @@ namespace Recipe.Api.Controllers
 
           return Ok(categoryList);
         }
-        [HttpPost]
-        public IActionResult CreateCategory(CreateCategoryRequestDto request)
-        {
-            _categoryService.CreateCategory(request);
-            return Ok("Kategoriler eklendi");
-        }
-        [HttpPut]
-        public IActionResult UpdateCategory(UpdateCategoryRequestDto request)
-        {
-            _categoryService.UpdateCategory(request);
-            return Ok("Kategoryler guncellendi");
-        }
-        [HttpDelete]
-        public IActionResult DeleteCategory(DeleteCategoryRequestDto request) 
-        {
-            _categoryService.DeleteCategory(request);
-            return Ok("Kategori silindi");
-        }
+       
     }
 }

@@ -9,7 +9,7 @@
         public int PreparetionTime { get; set; }
         public int CookingTime { get; set; }
         public int CategoryId { get; set; }
-        public string UserName { get; set; }
-        public string UserImage { get; set; }
+        public string UserName { get; set; } = "";
+        public string UserImage { get; set; } = "";
     }
 }
