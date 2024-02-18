@@ -21,7 +21,8 @@ namespace Recipe.Bll.Services.AmountTypeServices
                 {
                    Name = request.Name,
                    CreatedAt= DateTime.UtcNow,
-                   IsDeleted=false
+                   IsDeleted=false,
+                    CreatedBy = StaticValues.UserId
                 });
                 _dbContext.SaveChanges();
             }
@@ -44,6 +45,7 @@ namespace Recipe.Bll.Services.AmountTypeServices
                 }
                 data.Name= request.Name;
                 data.UpdatedAt= DateTime.UtcNow;
+                data.UpdatedBy = StaticValues.UserId;
                 _dbContext.Update(data);
                 _dbContext.SaveChanges(true);
             }

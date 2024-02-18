@@ -57,7 +57,8 @@ namespace Recipe.Bll.Services.RecipeDescriptionServices
                         ImageUrl = recipeDescription.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(recipeDescription.ImageUrl),
                         CreatedAt = DateTime.UtcNow,
                         IsDeleted = false,
-                        RecipeId = recipeDescription.RecipeId
+                        RecipeId = recipeDescription.RecipeId,
+                        CreatedBy = StaticValues.UserId,
                     });
 
                 }
@@ -86,7 +87,7 @@ namespace Recipe.Bll.Services.RecipeDescriptionServices
                     data.ImageUrl = recipeDescription.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(recipeDescription.ImageUrl);
                     data.RecipeId = recipeDescription.RecipeId;
                     data.UpdatedAt = DateTime.UtcNow;
-
+                    data.UpdatedBy = StaticValues.UserId;
                     _dbContext.Update(data);
                 }
                 _dbContext.SaveChanges();

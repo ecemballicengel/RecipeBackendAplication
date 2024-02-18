@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Recipe.Bll;
 using Recipe.Bll.Services.LoginServices;
 using Recipe.Dtos.Request;
 
@@ -20,6 +21,7 @@ namespace Recipe.Api.Controllers
         public IActionResult Login(LoginRequestDto request)
         {
             var data = _loginService.Login(request);
+            StaticValues.UserId = data.UserId;
             return Ok(data);
         }
     }

@@ -38,6 +38,7 @@ namespace Recipe.Api.Controllers
         [HttpPost]
         public IActionResult AddRecipe(AddRecipeRequestDto request)
         {
+            
             _recipeService.AddRecipe(request);
             return Ok("Ekleme basarili");
         }

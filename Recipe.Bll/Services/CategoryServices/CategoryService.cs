@@ -56,7 +56,8 @@ namespace Recipe.Bll.Services.CategoryServices
                     Description= request.Description,
                     ImageUrl = request.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.ImageUrl),
                     CreatedAt = DateTime.UtcNow,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    CreatedBy = StaticValues.UserId
                 });
                 _dbContext.SaveChanges();
             }
@@ -80,6 +81,7 @@ namespace Recipe.Bll.Services.CategoryServices
                 data.Description = request.Description;
                 data.ImageUrl = request.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.ImageUrl);
                 data.UpdatedAt = DateTime.UtcNow;
+                data.UpdatedBy = StaticValues.UserId;
                 _dbContext.Update(data);
                 _dbContext.SaveChanges(true);
             }
