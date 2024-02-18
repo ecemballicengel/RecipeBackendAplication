@@ -48,7 +48,8 @@ namespace Recipe.Bll.Services.LoginServices
                 {
                     AuthenticateResult = true,
                     AccessTokenExpireDate = token.TokenExpireDate,
-                    AuthToken = token.Token
+                    AuthToken = token.Token,
+                    UserId = user.Id,
                 };
             }
             catch (Exception ex)

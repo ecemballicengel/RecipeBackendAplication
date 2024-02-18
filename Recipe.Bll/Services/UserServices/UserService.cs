@@ -1,4 +1,5 @@
-﻿using Recipe.Dal.DbContexts;
+﻿using Recipe.Bll.Services.HelperServices;
+using Recipe.Dal.DbContexts;
 using Recipe.Dtos.Request;
 using Recipe.Dtos.Response;
 
@@ -7,10 +8,12 @@ namespace Recipe.Bll.Services.UserServices
     public class UserService : IUserService
     {
         private readonly RecipeDbContext _dbContext;
+        private readonly IHelperService _helperService;
 
-        public UserService(RecipeDbContext dbContext)
+        public UserService(RecipeDbContext dbContext,IHelperService helperService)
         {
             _dbContext = dbContext;
+            _helperService = helperService;
         }
         public void UpdateUserProfile(UpdateUserProfileRequestDto request)
         {
@@ -25,7 +28,7 @@ namespace Recipe.Bll.Services.UserServices
 
                 user.UserName = request.UserName;
                 user.Email = request.Email;
-                user.ImageUrl = request.ImageUrl;
+                user.ImageUrl =_helperService.SaveImage(request.ImageUrl);
 
                 _dbContext.Update(user);
                 _dbContext.SaveChanges();
@@ -46,7 +49,11 @@ namespace Recipe.Bll.Services.UserServices
                     throw new Exception("Kullanıcı bulunamadı");
                 }
 
-                user.Password = request.Password;
+                if(user.Password != request.Password)
+                {
+                    throw new Exception("HATALI SIFRE");
+                }
+                user.Password = request.NewPassword;
 
                 _dbContext.Update(user);
                 _dbContext.SaveChanges();

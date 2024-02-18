@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Recipe.Api.ActionFilter;
 using Recipe.Bll.Services.AdminServices;
 using Recipe.Bll.Services.UserServices;
 using Recipe.Dtos.Request;
@@ -9,6 +10,7 @@ namespace Recipe.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [RoleFilter]
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;

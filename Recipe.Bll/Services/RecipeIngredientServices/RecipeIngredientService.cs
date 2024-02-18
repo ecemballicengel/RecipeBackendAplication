@@ -52,7 +52,8 @@ namespace Recipe.Bll.Services.RecipeIngredientServices
                         CreatedAt = DateTime.UtcNow,
                         Name = recipeIngredient.Name,
                         IsDeleted = false,
-                        RecipeId = recipeIngredient.RecipeId
+                        RecipeId = recipeIngredient.RecipeId,
+                        CreatedBy = StaticValues.UserId,
                     });
 
                 }
@@ -81,6 +82,7 @@ namespace Recipe.Bll.Services.RecipeIngredientServices
                 data.Name = ingredient.Name;
                 data.RecipeId = ingredient.RecipeId;
                 data.UpdatedAt = DateTime.UtcNow;
+                data.UpdatedBy = StaticValues.UserId;
 
                 _dbContext.Update(data);
             }

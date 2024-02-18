@@ -129,7 +129,8 @@ namespace Recipe.Bll.Services.RecipeServices
                     TitleImage = request.TitleImage.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.TitleImage),
                     PreparetionTime = request.PreparetionTime,
                     NumberOfPeople = request.NumberOfPeople,
-                    IsDeleted = false
+                    IsDeleted = false,
+                    CreatedBy = StaticValues.UserId
                 };
 
                 var recipes = _dbContext.Recipes.Add(data);
@@ -163,6 +164,7 @@ namespace Recipe.Bll.Services.RecipeServices
                 existingRecipe.PreparetionTime = request.PreparetionTime;
                 existingRecipe.CategoryId = request.CategoryId;
                 existingRecipe.UpdatedAt = DateTime.Now;
+                existingRecipe.UpdatedBy = StaticValues.UserId;
 
                 _dbContext.Update(existingRecipe);
                 _dbContext.SaveChanges();
