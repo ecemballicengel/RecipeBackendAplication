@@ -10,7 +10,8 @@ namespace Recipe.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [RoleFilter]
+    //[Authorize]
+    //[RoleFilter]
     public class AdminController : ControllerBase
     {
         private readonly IAdminService _adminService;

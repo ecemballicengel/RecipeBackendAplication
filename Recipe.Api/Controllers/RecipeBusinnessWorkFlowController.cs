@@ -23,5 +23,27 @@ namespace Recipe.Api.Controllers
             _recipeBusinnessWorkFlow.CreateRecipeBusinessWorkFlow(request);
             return Ok("Ekleme basarili");
         }
+        [HttpPut]
+        [AllowAnonymous]
+        public IActionResult UpdateRecipeBusinessWorkFlow(UpdateRecipeBusinessWorkFlowRequestDto request)
+        {
+            _recipeBusinnessWorkFlow.UpdateRecipeBusinessWorkFlow(request);
+            return Ok("Guncelleme basarili");
+        }
+        [HttpDelete]
+        [AllowAnonymous]
+        public IActionResult DeleteRecipeBusinessWorkFlow(DeleteRecipeBusinessWorkFlowRequestDto request)
+        {
+            _recipeBusinnessWorkFlow.DeleteRecipeBusinessWorkFlow(request);
+            return Ok("Silme basarili");
+        }
+
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public IActionResult GetRecipeBussinessWorkFlow(int id)
+        {
+           var data = _recipeBusinnessWorkFlow.GetRecipeBussinessWorkFlow(new GetRecipeBusinessWorkFlowRequestDto { RecipeId = id});
+            return Ok(data);
+        }
     }
 }
