@@ -6,5 +6,6 @@
         public string AuthToken { get; set; } = "";
         public DateTime AccessTokenExpireDate { get; set; }
         public int UserId { get; set; }
+        public string Role { get; set; } = "";
     }
 }

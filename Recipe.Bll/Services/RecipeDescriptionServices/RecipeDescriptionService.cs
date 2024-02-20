@@ -80,11 +80,24 @@ namespace Recipe.Bll.Services.RecipeDescriptionServices
 
                     if (data == null)
                     {
-                        throw new Exception("Tarif Tanimi bulunamadi");
+                        _dbContext.RecipeDescriptions.Add(new RecipeDescriptionEntity
+                        {
+                            CreatedAt = DateTime.UtcNow,
+                            Description = recipeDescription.Description,
+                            ImageUrl = recipeDescription.ImageUrl.IsNullOrEmpty()
+                    ? ""
+                    : recipeDescription.ImageUrl.Contains("jpg")
+                    ? recipeDescription.ImageUrl
+                    : _helperService.SaveImage(recipeDescription.ImageUrl),
+                            RecipeId = recipeDescription.RecipeId,
+                        });
                     }
 
                     data.Description = recipeDescription.Description;
-                    data.ImageUrl = recipeDescription.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(recipeDescription.ImageUrl);
+                    data.ImageUrl = recipeDescription.ImageUrl.IsNullOrEmpty()
+                    ? ""
+                    : recipeDescription.ImageUrl.Contains("jpg")
+                    ? recipeDescription.ImageUrl : _helperService.SaveImage(recipeDescription.ImageUrl);
                     data.RecipeId = recipeDescription.RecipeId;
                     data.UpdatedAt = DateTime.UtcNow;
                     data.UpdatedBy = StaticValues.UserId;

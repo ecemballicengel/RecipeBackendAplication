@@ -12,7 +12,7 @@ namespace Recipe.Bll.Services.CategoryServices
         private readonly RecipeDbContext _dbContext;
         private readonly IHelperService _helperService;
 
-        public CategoryService(RecipeDbContext dbContext,IHelperService helperService)
+        public CategoryService(RecipeDbContext dbContext, IHelperService helperService)
         {
             _dbContext = dbContext;
             _helperService = helperService;
@@ -23,10 +23,10 @@ namespace Recipe.Bll.Services.CategoryServices
         {
             try
             {
-                var categories = _dbContext.Categories.Where(x=>x.IsDeleted == false).ToList();
+                var categories = _dbContext.Categories.Where(x => x.IsDeleted == false).ToList();
 
                 var response = new List<CategoryResponseDto>();
-                
+
                 foreach (var category in categories)
                 {
                     response.Add(new CategoryResponseDto
@@ -34,7 +34,7 @@ namespace Recipe.Bll.Services.CategoryServices
                         Id = category.Id,
                         Name = category.Name,
                         Description = category.Description,
-                        ImageUrl= category.ImageUrl,
+                        ImageUrl = category.ImageUrl,
                     });
                 }
 
@@ -46,6 +46,33 @@ namespace Recipe.Bll.Services.CategoryServices
             }
         }
 
+        public CategoryResponseDto GetCategortyById(int id)
+        {
+            try
+            {
+                var category = _dbContext.Categories.Where(x => x.IsDeleted == false && x.Id == id).FirstOrDefault();
+
+                if(category == null)
+                {
+                    return new CategoryResponseDto();
+                }
+
+                return (new CategoryResponseDto
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    Description = category.Description,
+                    ImageUrl = category.ImageUrl
+                });
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Kategorileri getirirken bir hata olustu");
+            }
+        }
+
+
         public void CreateCategory(CreateCategoryRequestDto request)
         {
             try
@@ -53,7 +80,7 @@ namespace Recipe.Bll.Services.CategoryServices
                 var data = _dbContext.Categories.Add(new CategoriesEntity
                 {
                     Name = request.Name,
-                    Description= request.Description,
+                    Description = request.Description,
                     ImageUrl = request.ImageUrl.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.ImageUrl),
                     CreatedAt = DateTime.UtcNow,
                     IsDeleted = false,

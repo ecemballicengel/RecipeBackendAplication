@@ -74,7 +74,16 @@ namespace Recipe.Bll.Services.RecipeIngredientServices
                 
                 if(data == null)
                 {
-                    throw new Exception("Malzeme kaydi bulunamadi");
+                    _dbContext.Add(new RecipeIngredientsEntity
+                    {
+                        CreatedAt = DateTime.UtcNow,
+                        Name = ingredient.Name,
+                        Amount = ingredient.Amount,
+                        IsDeleted = false,
+                        AmountTypeId = ingredient.AmountTypeId,
+                        CreatedBy = StaticValues.UserId,
+                        RecipeId = ingredient.RecipeId,
+                    });
                 }
 
                 data.Amount = ingredient.Amount;

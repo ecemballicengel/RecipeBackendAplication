@@ -9,5 +9,7 @@ namespace Recipe.Bll.Services.CategoryServices
         void CreateCategory(CreateCategoryRequestDto request);
         void UpdateCategory(UpdateCategoryRequestDto request);
         void DeleteCategory(DeleteCategoryRequestDto request);
+
+        CategoryResponseDto GetCategortyById(int id);
     }
 }

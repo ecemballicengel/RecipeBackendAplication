@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Recipe.Api.ActionFilter;
 using Recipe.Bll.Services.AdminServices;
+using Recipe.Bll.Services.CategoryServices;
 using Recipe.Bll.Services.UserServices;
 using Recipe.Dtos.Request;
 
@@ -16,11 +17,13 @@ namespace Recipe.Api.Controllers
     {
         private readonly IAdminService _adminService;
         private readonly IUserService _userService;
+        private readonly ICategoryService _categoryService;
 
-        public AdminController(IAdminService adminService,IUserService userService)
+        public AdminController(IAdminService adminService,IUserService userService,ICategoryService categoryService)
         {
             _adminService = adminService;
             _userService = userService;
+            _categoryService = categoryService;
         }
 
         [HttpGet("Users")]
@@ -114,6 +117,14 @@ namespace Recipe.Api.Controllers
         {
             var categories = _adminService.GetAllCategories();
             return Ok(categories);
+        }
+
+        [HttpGet("Categories/{id}")]
+        public IActionResult GetCategoriesById(int id)
+        {
+            var data = _categoryService.GetCategortyById(id);
+
+            return Ok(data);
         }
 
         [HttpPost("Categories")]
