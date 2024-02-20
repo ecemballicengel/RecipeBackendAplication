@@ -158,7 +158,11 @@ namespace Recipe.Bll.Services.RecipeServices
                 }
 
                 existingRecipe.Title = request.Title;
-                existingRecipe.TitleImage = request.TitleImage.IsNullOrEmpty() ? "" : _helperService.SaveImage(request.TitleImage);
+                existingRecipe.TitleImage = request.TitleImage.IsNullOrEmpty() 
+                    ? "" 
+                    : request.TitleImage.Contains("jpg") 
+                    ? request.TitleImage
+                    : _helperService.SaveImage(request.TitleImage);
                 existingRecipe.NumberOfPeople = request.NumberOfPeople;
                 existingRecipe.CookingTime = request.CookingTime;
                 existingRecipe.PreparetionTime = request.PreparetionTime;

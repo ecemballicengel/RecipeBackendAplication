@@ -48,9 +48,9 @@ namespace Recipe.Bll.Services.RecipeBusinnessWorkFlowServices
             {
 
                 _recipeService.UpdateRecipe(request.UpdateRecipeRequestDto);
-
+                request.UpdateRecipeIngredientRequestDto.ForEach(x => x.RecipeId = request.RecipeId);
                 _recipeIngredientService.UpdateRecipeIngredient(request.UpdateRecipeIngredientRequestDto);
-
+                request.UpdateRecipeDescriptionRequestDto.ForEach(x => x.RecipeId = request.RecipeId);
                 _recipeDescriptionService.UpdateRecipeDescription(request.UpdateRecipeDescriptionRequestDto);
             }
             catch (Exception ex)
