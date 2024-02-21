@@ -28,7 +28,7 @@ namespace Recipe.Bll.Services.RecipeServices
 
                 foreach (var recipe in recipes)
                 {
-                    var user = _dbContext.Users.FirstOrDefault(x => x.Id == recipe.CreatedBy);
+                    UserEntity? user = _dbContext.Users.FirstOrDefault(x => x.Id == recipe.CreatedBy);
                     
                     response.Add(new RecipeResponseDto
                     {
@@ -39,8 +39,8 @@ namespace Recipe.Bll.Services.RecipeServices
                         PreparetionTime = recipe.PreparetionTime,
                         NumberOfPeople = recipe.NumberOfPeople,
                         CookingTime = recipe.CookingTime,
-                        UserName = user != null && user.UserName.IsNullOrEmpty() ? "" : user.UserName,
-                        UserImage = user != null && user.ImageUrl.IsNullOrEmpty() ? "" : user.ImageUrl,
+                        UserName = user?.UserName ?? "",
+                        UserImage =  user?.ImageUrl ?? ""
                     });
                 }
 
@@ -205,7 +205,8 @@ namespace Recipe.Bll.Services.RecipeServices
         {
 
             var data = _dbContext.Recipes.FirstOrDefault(x => x.Id == request.Id && x.IsDeleted == false);
-            var user = _dbContext.Users.FirstOrDefault(x => x.Id == data.CreatedBy);
+            UserEntity? user = _dbContext.Users.FirstOrDefault(x => x.Id == data.CreatedBy);
+
             var response = new RecipeByIdResponseDto()
             {
                 Id = data.Id,
@@ -215,8 +216,8 @@ namespace Recipe.Bll.Services.RecipeServices
                 PreparetionTime = data.PreparetionTime,
                 NumberOfPeople = data.NumberOfPeople,
                 CookingTime = data.CookingTime,
-                UserName = user != null && user.UserName.IsNullOrEmpty() ? "" : user.UserName,
-                UserImage = user != null && user.ImageUrl.IsNullOrEmpty() ? "" : user.ImageUrl,
+                UserName = user?.UserName ?? "",
+                UserImage = user?.ImageUrl ?? ""
 
             };
             return response;
@@ -234,7 +235,7 @@ namespace Recipe.Bll.Services.RecipeServices
 
                 foreach (var recipe in recipes)
                 {
-                    var user = _dbContext.Users.FirstOrDefault(x => x.Id == recipe.CreatedBy);
+                    UserEntity? user = _dbContext.Users.FirstOrDefault(x => x.Id == recipe.CreatedBy);
 
                     response.Add(new RecipeResponseDto
                     {
@@ -245,8 +246,8 @@ namespace Recipe.Bll.Services.RecipeServices
                         PreparetionTime = recipe.PreparetionTime,
                         NumberOfPeople = recipe.NumberOfPeople,
                         CookingTime = recipe.CookingTime,
-                        UserName = user != null && user.UserName.IsNullOrEmpty() ? "" : user.UserName,
-                        UserImage = user != null && user.ImageUrl.IsNullOrEmpty() ? "" : user.ImageUrl,
+                        UserName = user?.UserName ?? "",
+                        UserImage = user?.ImageUrl ?? ""
                     });
                 }
 
