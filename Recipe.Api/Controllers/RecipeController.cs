@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using Recipe.Bll.Enums;
 using Recipe.Bll.Services.RecipeServices;
+using Recipe.Bll.Services.SearchServices;
 using Recipe.Dtos.Request;
 
 namespace Recipe.Api.Controllers
@@ -13,10 +15,12 @@ namespace Recipe.Api.Controllers
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeService _recipeService;
+        private readonly ISearchService _searchService;
 
-        public RecipeController(IRecipeService recipeService)
+        public RecipeController(IRecipeService recipeService,ISearchService searchService)
         {
             _recipeService = recipeService;
+            _searchService = searchService;
         }
         [AllowAnonymous]
         [HttpGet]
@@ -119,6 +123,24 @@ namespace Recipe.Api.Controllers
             {
                 return BadRequest("Tarif silinirken bir hata oluştu");
             }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Search")]
+        public IActionResult SearchRecipes([FromQuery] SearchCriteria criteria,string keyword)
+        {
+            var data = _searchService.GetRecipesByCriteria(criteria,keyword);
+
+            return Ok(data);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("category/{id}")]
+        public IActionResult SearchRecipes(int id)
+        {
+            var data = _searchService.GetRecipesByCategory(id);
+
+            return Ok(data);
         }
     }
 }
