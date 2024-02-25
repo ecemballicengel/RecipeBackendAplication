@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Recipe.Bll.Extensions;
+using Stripe;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,7 @@ builder.Services.AddSwaggerGen(c =>
         Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
     });
 });
+StripeConfiguration.ApiKey = "sk_test_51OBCX1Gg5oQ5MXqVA400kjMPoTt36aYIeUbuFR5Pz14gw6hLIgPgfndtUxbpojhUUjVwGeTPK3p1csnKrfBwDzsK00ftUzVcZ2";
 
 
 builder.Services.AddCors(options =>
