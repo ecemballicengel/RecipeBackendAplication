@@ -10,6 +10,7 @@ using Recipe.Bll.Services.RecipeIngredientServices;
 using Recipe.Bll.Services.RecipeServices;
 using Recipe.Bll.Services.RegisterServices;
 using Recipe.Bll.Services.SearchServices;
+using Recipe.Bll.Services.StripeServices;
 using Recipe.Bll.Services.TokenServices;
 using Recipe.Bll.Services.UserServices;
 using Recipe.Dal.Extensions;
@@ -34,6 +35,7 @@ namespace Recipe.Bll.Extensions
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<ISearchService, SearchService>();
+            services.AddScoped<IStripeService, StripeService>();
         }
     }
 }
