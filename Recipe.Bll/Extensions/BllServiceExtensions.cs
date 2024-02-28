@@ -2,6 +2,7 @@
 using Recipe.Bll.Services.AdminServices;
 using Recipe.Bll.Services.AmountTypeServices;
 using Recipe.Bll.Services.CategoryServices;
+using Recipe.Bll.Services.CommentServices;
 using Recipe.Bll.Services.HelperServices;
 using Recipe.Bll.Services.LoginServices;
 using Recipe.Bll.Services.RecipeBusinnessWorkFlowServices;
@@ -36,6 +37,7 @@ namespace Recipe.Bll.Extensions
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<IStripeService, StripeService>();
+            services.AddScoped<ICommentService, CommentService>();
         }
     }
 }
