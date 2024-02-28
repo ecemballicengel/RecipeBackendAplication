@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Recipe.Dal.Extensions;
+using Recipe.Dal.Migrations;
 using Recipe.Entities;
 
 namespace Recipe.Dal.DbContexts
@@ -33,6 +34,6 @@ namespace Recipe.Dal.DbContexts
         public DbSet<CategoriesEntity> Categories { get; set; }
         public DbSet<AmountTypesEntity> AmountTypes { get; set; }
         public DbSet<UserEntity> Users { get; set; }
-
+        public DbSet<CommentEntity> Comments { get; set; }
     }
 }
