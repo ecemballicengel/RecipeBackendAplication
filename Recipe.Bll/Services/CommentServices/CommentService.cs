@@ -49,6 +49,9 @@ namespace Recipe.Bll.Services.CommentServices
                     throw new Exception("Yorum bulunamadı");
                 }
 
+                if(existingComment.CreatedBy !=  StaticValues.UserId)
+                {
+                    throw new Exception("Baska kullanicinin verisini guncelleyemezsiniz");                }
                 existingComment.Id = request.Id;
                 existingComment.Comment = request.Comment;
                 existingComment.RecipeId = request.RecipeId;
@@ -100,7 +103,8 @@ namespace Recipe.Bll.Services.CommentServices
                 RecipeId = data.RecipeId,
                 CreatedAt = DateTime.Now,
                 UserName = user?.UserName ?? "",
-                UserImage = user?.ImageUrl ?? ""
+                UserImage = user?.ImageUrl ?? "",
+                UserId = user?.Id??0,
 
             };
             return response;
@@ -124,7 +128,8 @@ namespace Recipe.Bll.Services.CommentServices
                         RecipeId = comment.RecipeId,
                         CreatedAt = DateTime.Now,
                         UserName = user?.UserName ?? "",
-                        UserImage = user?.ImageUrl ?? ""
+                        UserImage = user?.ImageUrl ?? "",
+                        UserId = user?.Id ?? 0,
                     });
                 }
 

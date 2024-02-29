@@ -30,10 +30,10 @@ namespace Recipe.Api.Controllers
             _commentService.UpdateComment(request);
             return Ok("Yorum basarili bir sekilde guncellendi");
         }
-        [HttpDelete]
-        public IActionResult DeleteComment(DeleteCommentRequestDto request) 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteComment( int id) 
         {
-            _commentService.DeleteComment(request);
+            _commentService.DeleteComment(new DeleteCommentRequestDto { Id = id});
             return Ok("Yorum silindi");
         }
 
@@ -45,10 +45,10 @@ namespace Recipe.Api.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
-        public IActionResult GetComments()
+        [HttpGet("recipeComment/{id}")]
+        public IActionResult GetComments(int id)
         {
-            var data = _commentService.GetAllComment();
+            var data = _commentService.GetAllComment().Where(x=>x.RecipeId ==id).ToList();
             return Ok(data);
         }
 
